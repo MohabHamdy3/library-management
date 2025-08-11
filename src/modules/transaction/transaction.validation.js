@@ -17,3 +17,10 @@ export const returnBookSchema = {
     }).required(),
     headers: generalRules.headers.required().unknown(true),
 }
+
+export const getTransactionHistorySchema = {
+    body : Joi.object({
+        userId: Joi.string().required()
+    }).required(),
+    headers: generalRules.headers.required().unknown(true),
+}
