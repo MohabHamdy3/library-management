@@ -12,7 +12,7 @@ const transactionRouter = Router({ caseSensitive: true, strict: true });
 
 transactionRouter.post("/borrow" , authentication ,validation(UV.borrowBookSchema), authorization([userRoles.ADMIN, userRoles.USER]), US.borrowBook);
 transactionRouter.put("/return", authentication, validation(UV.returnBookSchema), authorization([userRoles.ADMIN, userRoles.USER]), US.returnBook);
-transactionRouter.get("/history", authentication, authorization([userRoles.ADMIN, userRoles.USER]), US.getTransactionHistory);
+transactionRouter.get("/history", authentication, validation(UV.getTransactionHistorySchema), authorization([userRoles.ADMIN, userRoles.USER]), US.getTransactionHistory);
 
 
 
