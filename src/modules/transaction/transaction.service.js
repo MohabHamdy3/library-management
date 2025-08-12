@@ -65,3 +65,29 @@ export const getTransactionHistory = async (req, res, next) => {
     const transactions = await transactionModel.find({ userId });
     res.status(200).json({ message: "Transaction history retrieved successfully", transactions });
 }
+
+
+export const loggedInUser = async (req, res, next) => {
+    const transaction = await transactionModel.find({ userId: req.user.id });
+    if (!transaction) {
+        throw new Error("No active transactions found", {
+            cause: 404,
+        });
+    }
+    req.transaction = transaction;
+    next();
+};
+
+export const getAllTransactions = async (req, res, next) => {
+    const {status , sort = "asc"} = req.query;
+    const filter = {};
+    if (status) {
+        filter.status = status.toLowerCase();
+    }
+    let sortOrder = sort === "desc" ? -1 : 1;
+    const transactions = await transactionModel.find(filter)
+    .sort({ borrowDate : sortOrder})
+    .populate('userId', 'name email')
+    .populate('bookId', 'title author')
+    res.status(200).json({ message: "Transactions retrieved successfully", transactions });
+};

@@ -55,3 +55,21 @@ export const deleteBook = async (req, res, next) => {
     }
     res.status(200).json({ message: "Book deleted successfully", book: deletedBook });
 }
+
+export const searchBooks = async (req, res, next) => {
+    const {title , author , page = 1 , limit = 10} = req.query;
+    const filter = {}
+    if (title) {
+        filter.title = { $regex: title, $options: 'i' }; // Case-insensitive search
+    }
+    if (author) {
+        filter.author = { $regex: author, $options: 'i' }; // Case-insensitive search
+    }
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const books = await bookModel.find(filter)
+        .skip(skip)
+        .limit(parseInt(limit));
+    const total = await bookModel.countDocuments(filter);
+    res.status(200).json({ message: "Books retrieved successfully", books, total });
+}
+

@@ -14,5 +14,6 @@ bookRouter.post("/create", authentication, validation(UV.addBookSchema), authori
 bookRouter.put("/:id", authentication, validation(UV.updateBookSchema), authorization([userRoles.ADMIN]), US.updateBook);
 bookRouter.get("/", authentication, authorization([userRoles.ADMIN, userRoles.USER]), US.getAllBooks);
 bookRouter.delete("/:id", authentication, authorization([userRoles.ADMIN]), US.deleteBook);
+bookRouter.get("/search", authentication, authorization([userRoles.ADMIN, userRoles.USER]), US.searchBooks);
 
 export default bookRouter;
